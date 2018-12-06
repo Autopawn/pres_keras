@@ -475,6 +475,77 @@ We will test the model on 4 images outside the dataset:
 ![](imgs/face_salman.png) ![](imgs/face_kaku.png)
 
 ---
+# Predicting with our model
+
+```python
+!google-drive-ocamlfuse -cc # Clear Drive cache
+
+faces = [
+  '/gdrive/My Drive/datasets/face_scatman.png',
+  '/gdrive/My Drive/datasets/face_armstrong.png',
+  '/gdrive/My Drive/datasets/face_salman.png',
+  '/gdrive/My Drive/datasets/face_kaku.png']
+
+x_pred = np.zeros((len(faces),48,48,3))
+
+for i in range(len(faces)):
+  fnam = faces[i]
+  img = Image.open(fnam).convert('RGB').resize((48,48))
+  x_pred[i] = np.array(img,dtype='float')/255.0
+
+res = model.predict(x_pred)
+```
+
+---
+# Predicting with our model
+
+```python
+for i in range(len(faces)):
+  fname = faces[i]
+  pred = res[i]
+  print("for '%s'"%fname)
+  print("  white:  %.10f"%pred[0])
+  print("  black:  %.10f"%pred[1])
+  print("  asian:  %.10f"%pred[2])
+  print("  indian: %.10f"%pred[3])
+  print("  other:  %.10f"%pred[4])
+```
+
+### Output:
+```
+for '/gdrive/My Drive/datasets/face_scatman.png'
+  white:  0.0023453396
+  black:  0.1121084243
+  asian:  0.0000282523
+  indian: 0.7826154828
+  other:  0.1029024646
+```
+
+---
+# Predicting with our model
+
+```
+for '/gdrive/My Drive/datasets/face_armstrong.png'
+  white:  0.4184690714
+  black:  0.5805023909
+  asian:  0.0000150980
+  indian: 0.0007698628
+  other:  0.0002436012
+for '/gdrive/My Drive/datasets/face_salman.png'
+  white:  0.0000000001
+  black:  0.9999998808
+  asian:  0.0000000000
+  indian: 0.0000001533
+  other:  0.0000000000
+for '/gdrive/My Drive/datasets/face_kaku.png'
+  white:  0.0007136273
+  black:  0.3409764469
+  asian:  0.5911596417
+  indian: 0.0671168566
+  other:  0.0000335017
+```
+
+---
 # How we may enhance our model
 
 * Reduce overfitting using **regularizers** like **Dropout** or **Batch normalization**.
