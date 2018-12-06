@@ -1,3 +1,7 @@
+code/UTKFace
+code/UTKFace.tar.gz
+code/*.npy
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
